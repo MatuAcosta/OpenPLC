@@ -96,6 +96,7 @@ PROGRAM prueba
   VAR
     sensor_hall : BOOL := 0;
     led : BOOL := 1;
+    led_rojo : BOOL := 0;
     rele : BOOL := 0;
   END_VAR
   VAR
@@ -105,6 +106,7 @@ PROGRAM prueba
     TP1 : TP;
     _TMP_NOT10_OUT : BOOL;
     R_TRIG1 : R_TRIG;
+    _TMP_NOT21_OUT : BOOL;
     _TMP_NOT16_OUT : BOOL;
   END_VAR
 
@@ -112,12 +114,15 @@ PROGRAM prueba
   R_TRIG1(CLK := _TMP_NOT10_OUT);
   counter(CU := R_TRIG1.Q, R := TON0.Q, PV := 5);
   TON0(IN := counter.Q, PT := T#10000ms);
+  _TMP_NOT21_OUT := NOT(TON0.Q);
+  led_rojo := _TMP_NOT21_OUT;
   led := TON0.Q;
   TP0(IN := counter.Q, PT := T#2000ms);
   TP1(IN := TON0.Q, PT := T#2000ms);
   rele := TP0.Q OR TP1.Q;
+  led_rojo := counter.Q;
   _TMP_NOT16_OUT := NOT(counter.Q);
-  led := _TMP_NOT16_OUT;
+  led := _TMP_NOT16_OUT OR _TMP_NOT16_OUT;
 END_PROGRAM
 
 

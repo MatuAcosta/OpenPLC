@@ -108,6 +108,7 @@ typedef struct {
   // PROGRAM private variables - TEMP, private and located variables
   __DECLARE_VAR(BOOL,SENSOR_HALL)
   __DECLARE_VAR(BOOL,LED)
+  __DECLARE_VAR(BOOL,LED_ROJO)
   __DECLARE_VAR(BOOL,RELE)
   TP TP0;
   CTU COUNTER;
@@ -115,6 +116,7 @@ typedef struct {
   TP TP1;
   __DECLARE_VAR(BOOL,_TMP_NOT10_OUT)
   R_TRIG R_TRIG1;
+  __DECLARE_VAR(BOOL,_TMP_NOT21_OUT)
   __DECLARE_VAR(BOOL,_TMP_NOT16_OUT)
 
 } PRUEBA;

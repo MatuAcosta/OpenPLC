@@ -203,6 +203,7 @@ __end:
 void PRUEBA_init__(PRUEBA *data__, BOOL retain) {
   __INIT_VAR(data__->SENSOR_HALL,0,retain)
   __INIT_VAR(data__->LED,1,retain)
+  __INIT_VAR(data__->LED_ROJO,0,retain)
   __INIT_VAR(data__->RELE,0,retain)
   TP_init__(&data__->TP0,retain);
   CTU_init__(&data__->COUNTER,retain);
@@ -210,6 +211,7 @@ void PRUEBA_init__(PRUEBA *data__, BOOL retain) {
   TP_init__(&data__->TP1,retain);
   __INIT_VAR(data__->_TMP_NOT10_OUT,__BOOL_LITERAL(FALSE),retain)
   R_TRIG_init__(&data__->R_TRIG1,retain);
+  __INIT_VAR(data__->_TMP_NOT21_OUT,__BOOL_LITERAL(FALSE),retain)
   __INIT_VAR(data__->_TMP_NOT16_OUT,__BOOL_LITERAL(FALSE),retain)
 }
 
@@ -227,6 +229,8 @@ void PRUEBA_body__(PRUEBA *data__) {
   __SET_VAR(data__->TON0.,IN,,__GET_VAR(data__->COUNTER.Q,));
   __SET_VAR(data__->TON0.,PT,,__time_to_timespec(1, 10000, 0, 0, 0, 0));
   TON_body__(&data__->TON0);
+  __SET_VAR(data__->,_TMP_NOT21_OUT,,!(__GET_VAR(data__->TON0.Q,)));
+  __SET_VAR(data__->,LED_ROJO,,__GET_VAR(data__->_TMP_NOT21_OUT,));
   __SET_VAR(data__->,LED,,__GET_VAR(data__->TON0.Q,));
   __SET_VAR(data__->TP0.,IN,,__GET_VAR(data__->COUNTER.Q,));
   __SET_VAR(data__->TP0.,PT,,__time_to_timespec(1, 2000, 0, 0, 0, 0));
@@ -235,8 +239,9 @@ void PRUEBA_body__(PRUEBA *data__) {
   __SET_VAR(data__->TP1.,PT,,__time_to_timespec(1, 2000, 0, 0, 0, 0));
   TP_body__(&data__->TP1);
   __SET_VAR(data__->,RELE,,(__GET_VAR(data__->TP0.Q,) || __GET_VAR(data__->TP1.Q,)));
+  __SET_VAR(data__->,LED_ROJO,,__GET_VAR(data__->COUNTER.Q,));
   __SET_VAR(data__->,_TMP_NOT16_OUT,,!(__GET_VAR(data__->COUNTER.Q,)));
-  __SET_VAR(data__->,LED,,__GET_VAR(data__->_TMP_NOT16_OUT,));
+  __SET_VAR(data__->,LED,,(__GET_VAR(data__->_TMP_NOT16_OUT,) || __GET_VAR(data__->_TMP_NOT16_OUT,)));
 
   goto __end;
 
