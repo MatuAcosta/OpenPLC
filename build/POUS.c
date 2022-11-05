@@ -205,10 +205,10 @@ void PRUEBA_init__(PRUEBA *data__, BOOL retain) {
   __INIT_VAR(data__->LED,1,retain)
   __INIT_VAR(data__->LED_ROJO,0,retain)
   __INIT_VAR(data__->RELE,0,retain)
-  TP_init__(&data__->TP0,retain);
+  TP_init__(&data__->SUBIR_PIST,retain);
   CTU_init__(&data__->COUNTER,retain);
-  TON_init__(&data__->TON0,retain);
-  TP_init__(&data__->TP1,retain);
+  TON_init__(&data__->DELAY,retain);
+  TP_init__(&data__->BAJAR_PIST,retain);
   __INIT_VAR(data__->_TMP_NOT10_OUT,__BOOL_LITERAL(FALSE),retain)
   R_TRIG_init__(&data__->R_TRIG1,retain);
   __INIT_VAR(data__->_TMP_NOT21_OUT,__BOOL_LITERAL(FALSE),retain)
@@ -223,22 +223,21 @@ void PRUEBA_body__(PRUEBA *data__) {
   __SET_VAR(data__->R_TRIG1.,CLK,,__GET_VAR(data__->_TMP_NOT10_OUT,));
   R_TRIG_body__(&data__->R_TRIG1);
   __SET_VAR(data__->COUNTER.,CU,,__GET_VAR(data__->R_TRIG1.Q,));
-  __SET_VAR(data__->COUNTER.,R,,__GET_VAR(data__->TON0.Q,));
+  __SET_VAR(data__->COUNTER.,R,,__GET_VAR(data__->DELAY.Q,));
   __SET_VAR(data__->COUNTER.,PV,,5);
   CTU_body__(&data__->COUNTER);
-  __SET_VAR(data__->TON0.,IN,,__GET_VAR(data__->COUNTER.Q,));
-  __SET_VAR(data__->TON0.,PT,,__time_to_timespec(1, 10000, 0, 0, 0, 0));
-  TON_body__(&data__->TON0);
-  __SET_VAR(data__->,_TMP_NOT21_OUT,,!(__GET_VAR(data__->TON0.Q,)));
+  __SET_VAR(data__->DELAY.,IN,,__GET_VAR(data__->COUNTER.Q,));
+  __SET_VAR(data__->DELAY.,PT,,__time_to_timespec(1, 12000, 0, 0, 0, 0));
+  TON_body__(&data__->DELAY);
+  __SET_VAR(data__->,_TMP_NOT21_OUT,,!(__GET_VAR(data__->DELAY.Q,)));
   __SET_VAR(data__->,LED_ROJO,,__GET_VAR(data__->_TMP_NOT21_OUT,));
-  __SET_VAR(data__->,LED,,__GET_VAR(data__->TON0.Q,));
-  __SET_VAR(data__->TP0.,IN,,__GET_VAR(data__->COUNTER.Q,));
-  __SET_VAR(data__->TP0.,PT,,__time_to_timespec(1, 2000, 0, 0, 0, 0));
-  TP_body__(&data__->TP0);
-  __SET_VAR(data__->TP1.,IN,,__GET_VAR(data__->TON0.Q,));
-  __SET_VAR(data__->TP1.,PT,,__time_to_timespec(1, 2000, 0, 0, 0, 0));
-  TP_body__(&data__->TP1);
-  __SET_VAR(data__->,RELE,,(__GET_VAR(data__->TP0.Q,) || __GET_VAR(data__->TP1.Q,)));
+  __SET_VAR(data__->SUBIR_PIST.,IN,,__GET_VAR(data__->COUNTER.Q,));
+  __SET_VAR(data__->SUBIR_PIST.,PT,,__time_to_timespec(1, 2000, 0, 0, 0, 0));
+  TP_body__(&data__->SUBIR_PIST);
+  __SET_VAR(data__->BAJAR_PIST.,IN,,__GET_VAR(data__->DELAY.Q,));
+  __SET_VAR(data__->BAJAR_PIST.,PT,,__time_to_timespec(1, 2000, 0, 0, 0, 0));
+  TP_body__(&data__->BAJAR_PIST);
+  __SET_VAR(data__->,RELE,,(__GET_VAR(data__->BAJAR_PIST.Q,) || __GET_VAR(data__->SUBIR_PIST.Q,)));
   __SET_VAR(data__->,LED_ROJO,,__GET_VAR(data__->COUNTER.Q,));
   __SET_VAR(data__->,_TMP_NOT16_OUT,,!(__GET_VAR(data__->COUNTER.Q,)));
   __SET_VAR(data__->,LED,,(__GET_VAR(data__->_TMP_NOT16_OUT,) || __GET_VAR(data__->_TMP_NOT16_OUT,)));

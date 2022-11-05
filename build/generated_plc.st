@@ -6,10 +6,10 @@ PROGRAM prueba
     rele AT %QX0.1 : BOOL := 0;
   END_VAR
   VAR
-    TP0 : TP;
+    subir_pist : TP;
     counter : CTU;
-    TON0 : TON;
-    TP1 : TP;
+    delay : TON;
+    bajar_pist : TP;
     _TMP_NOT10_OUT : BOOL;
     R_TRIG1 : R_TRIG;
     _TMP_NOT21_OUT : BOOL;
@@ -18,14 +18,13 @@ PROGRAM prueba
 
   _TMP_NOT10_OUT := NOT(sensor_hall);
   R_TRIG1(CLK := _TMP_NOT10_OUT);
-  counter(CU := R_TRIG1.Q, R := TON0.Q, PV := 5);
-  TON0(IN := counter.Q, PT := T#10000ms);
-  _TMP_NOT21_OUT := NOT(TON0.Q);
+  counter(CU := R_TRIG1.Q, R := delay.Q, PV := 5);
+  delay(IN := counter.Q, PT := T#12000ms);
+  _TMP_NOT21_OUT := NOT(delay.Q);
   led_rojo := _TMP_NOT21_OUT;
-  led := TON0.Q;
-  TP0(IN := counter.Q, PT := T#2000ms);
-  TP1(IN := TON0.Q, PT := T#2000ms);
-  rele := TP0.Q OR TP1.Q;
+  subir_pist(IN := counter.Q, PT := T#2000ms);
+  bajar_pist(IN := delay.Q, PT := T#2000ms);
+  rele := bajar_pist.Q OR subir_pist.Q;
   led_rojo := counter.Q;
   _TMP_NOT16_OUT := NOT(counter.Q);
   led := _TMP_NOT16_OUT OR _TMP_NOT16_OUT;
