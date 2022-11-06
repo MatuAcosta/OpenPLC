@@ -106,16 +106,13 @@ PROGRAM prueba
     bajar_pist : TP;
     _TMP_NOT10_OUT : BOOL;
     R_TRIG1 : R_TRIG;
-    _TMP_NOT21_OUT : BOOL;
     _TMP_NOT16_OUT : BOOL;
   END_VAR
 
   _TMP_NOT10_OUT := NOT(sensor_hall);
   R_TRIG1(CLK := _TMP_NOT10_OUT);
-  counter(CU := R_TRIG1.Q, R := delay.Q, PV := 5);
   delay(IN := counter.Q, PT := T#12000ms);
-  _TMP_NOT21_OUT := NOT(delay.Q);
-  led_rojo := _TMP_NOT21_OUT;
+  counter(CU := R_TRIG1.Q, R := delay.Q, PV := 5);
   subir_pist(IN := counter.Q, PT := T#2000ms);
   bajar_pist(IN := delay.Q, PT := T#2000ms);
   rele := bajar_pist.Q OR subir_pist.Q;
